@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lexora — Calculateur juridique</title>
+  <meta name="description" content="Lexora calcule les intérêts au taux légal, avec les taux officiels appliqués automatiquement, et génère des documents prêts à joindre à vos conclusions.">
+  <link rel="icon" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #000;
+      --carbon: #181818;
+      --ash: #6d6d6d;
+      --paper: #fff;
+      --line: rgba(0, 0, 0, .1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid #9c7a3c; outline-offset: 3px; border-radius: 4px; }
+
+    nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; height: 64px;
+      background: rgba(0, 0, 0, .72); backdrop-filter: blur(12px);
+      color: #fff;
+    }
+    nav .brand { font-weight: 500; font-size: 15px; text-decoration: none; }
+    nav .links { display: flex; gap: 24px; font-size: 13px; }
+    nav .links a { text-decoration: none; color: rgba(255, 255, 255, .7); transition: color .25s; }
+    nav .links a:hover { color: #fff; }
+
+    .hero {
+      min-height: 100vh; background: var(--ink); color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 28px 72px;
+    }
+    .hero h1 {
+      margin: 0 0 28px; font-weight: 300; line-height: .9; letter-spacing: -.03em;
+      font-size: clamp(64px, 15vw, 180px);
+    }
+    .hero p {
+      margin: 0 0 48px; max-width: 560px; font-weight: 300; line-height: 1.5;
+      font-size: clamp(18px, 3vw, 29px); color: rgba(255, 255, 255, .6);
+    }
+    .buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-block; padding: 12px 28px; border-radius: 75px;
+      font-size: 14px; text-decoration: none; line-height: 1.2;
+      transition: opacity .28s, border-color .28s;
+    }
+    .btn-light { background: #fff; color: var(--ink); }
+    .btn-light:hover { opacity: .85; }
+    .btn-ghost { border: 1px solid rgba(255, 255, 255, .3); color: #fff; }
+    .btn-ghost:hover { border-color: rgba(255, 255, 255, .7); }
+    .btn-dark { background: var(--ink); color: #fff; padding: 14px 32px; }
+    .btn-dark:hover { opacity: .8; }
+
+    section { padding: clamp(80px, 12vw, 152px) 28px; }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ash); margin: 0 0 12px; }
+    h2 {
+      margin: 0 0 12px; font-weight: 300; line-height: 1.1; letter-spacing: -.02em;
+      font-size: clamp(34px, 5vw, 54px); max-width: 640px;
+    }
+    .lead { margin: 0 0 64px; max-width: 480px; font-size: 16px; line-height: 1.6; color: var(--ash); }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .feature { padding: 40px 40px 40px 0; border-bottom: 1px solid var(--line); }
+    .feature .n { font-size: 11px; letter-spacing: .06em; color: var(--ash); margin-bottom: 12px; }
+    .feature h3 { margin: 0 0 8px; font-size: 18px; font-weight: 400; line-height: 1.3; }
+    .feature p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ash); }
+
+    .dark { background: var(--ink); color: #fff; text-align: center; }
+    .dark h2 { margin-inline: auto; font-size: clamp(36px, 6vw, 78px); max-width: 760px; }
+    .dark h2 span { color: rgba(255, 255, 255, .4); }
+    .dark .lead { margin: 28px auto 0; color: rgba(255, 255, 255, .5); max-width: 440px; }
+
+    #download { text-align: center; border-top: 1px solid rgba(0, 0, 0, .06); }
+    #download h2 { margin-inline: auto; }
+    #download .lead { margin: 16px auto 48px; }
+    .platforms { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .platform { text-align: center; }
+    .platform small { display: block; margin-top: 10px; font-size: 12px; color: var(--ash); }
+    .install { max-width: 560px; margin: 64px auto 0; text-align: left; border-top: 1px solid var(--line); padding-top: 32px; }
+    .install h3 { margin: 0 0 16px; font-size: 14px; font-weight: 600; }
+    .install p { margin: 0 0 12px; font-size: 13px; line-height: 1.65; color: var(--ash); }
+    .install code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+    footer { background: var(--carbon); color: #fff; padding: 40px 28px; }
+    footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    footer span:last-child { font-size: 11px; color: rgba(255, 255, 255, .4); }
+
+    @media (max-width: 880px) {
+      .features { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .features { grid-template-columns: 1fr; }
+      .feature { padding-right: 0; }
+      nav .links { gap: 16px; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero h1, .hero p, .hero .buttons { animation: rise .7s cubic-bezier(.22, 1, .36, 1) both; }
+      .hero p { animation-delay: .12s; }
+      .hero .buttons { animation-delay: .22s; }
+      @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="#top">Lexora</a>
+    <div class="links">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#download">Télécharger</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <h1>Lexora</h1>
+    <p>Intérêts au taux légal, taux officiels appliqués automatiquement — des documents prêts à joindre à vos conclusions.</p>
+    <div class="buttons">
+      <a class="btn btn-light" href="#download">Télécharger</a>
+      <a class="btn btn-ghost" href="#features">Découvrir</a>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="eyebrow">Fonctionnalités</p>
+      <h2>Tout ce dont vous avez besoin</h2>
+      <p class="lead">Des outils pensés pour les professionnels du droit, dans une interface fluide.</p>
+      <div class="features">
+        <div class="feature"><div class="n">01</div><h3>Taux légaux automatiques</h3><p>Le taux semestriel, selon la nature de la créance, est appliqué période par période. Plus de saisie manuelle.</p></div>
+        <div class="feature"><div class="n">02</div><h3>Capitalisation et majoration</h3><p>Capitalisation annuelle des intérêts et majoration de 5 points après deux mois, détaillées ligne par ligne.</p></div>
+        <div class="feature"><div class="n">03</div><h3>Calendrier de procédure</h3><p>Incident, mise en demeure, assignation, conclusions, audience, délibéré — avec lien vers vos documents.</p></div>
+        <div class="feature"><div class="n">04</div><h3>Export PDF &amp; Excel</h3><p>Un décompte détaillé, période par période, prêt à joindre à vos conclusions.</p></div>
+        <div class="feature"><div class="n">05</div><h3>Règles juridiques</h3><p>Le fondement de chaque calcul et les dates à renseigner, accessibles dans l'application.</p></div>
+        <div class="feature"><div class="n">06</div><h3>Vos données chez vous</h3><p>Les dossiers restent sur votre poste ou sur le serveur de votre cabinet. Rien n'est envoyé ailleurs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap">
+      <h2>Précision. <span>Rapidité.</span> Sérénité.</h2>
+      <p class="lead">Chaque calcul s'appuie sur les taux officiels publiés par arrêté. Exportez en PDF ou Excel en un clic.</p>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <p class="eyebrow">Téléchargement</p>
+      <h2>Prêt à commencer ?</h2>
+      <p class="lead" id="version-line">Téléchargez Lexora pour Windows ou Mac.</p>
+
+      <div class="platforms">
+        <div class="platform">
+          <a class="btn btn-dark" id="dl-win" href="https://github.com/Gonzouav/lexora-releases/releases/latest">Télécharger pour Windows</a>
+          <small>Windows 10 ou 11</small>
+        </div>
+        <div class="platform">
+          <a class="btn btn-dark" id="dl-mac-arm" href="https://github.com/Gonzouav/lexora-releases/releases/latest">Mac · puce Apple (M1 à M4)</a>
+          <small>Mac récent</small>
+        </div>
+        <div class="platform">
+          <a class="btn btn-dark" id="dl-mac-intel" href="https://github.com/Gonzouav/lexora-releases/releases/latest">Mac · processeur Intel</a>
+          <small>Avant fin 2020</small>
+        </div>
+      </div>
+
+      <div class="install">
+        <h3>Premier lancement</h3>
+        <p><strong>Windows :</strong> si « Windows a protégé votre ordinateur » s'affiche, cliquez sur « Informations complémentaires » puis « Exécuter quand même ». L'application n'est pas encore signée numériquement.</p>
+        <p><strong>Mac :</strong> glissez Lexora dans « Applications », puis faites un clic droit sur l'icône &gt; « Ouvrir » et confirmez. Si macOS indique que l'application est « endommagée », ouvrez le Terminal et tapez <code>xattr -cr /Applications/Lexora.app</code>.</p>
+        <p>Pour savoir quel Mac vous avez : menu Pomme (en haut à gauche) &gt; « À propos de ce Mac », ligne « Puce » ou « Processeur ».</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>Lexora</span>
+      <span>Calculateur juridique — les calculs sont indicatifs et doivent être vérifiés avant tout usage en procédure.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Boutons pointant directement vers les fichiers de la dernière version publiée.
+    // Si l'API est indisponible, les liens restent ceux de la page « dernière version ».
+    (function () {
+      var REPO = 'Gonzouav/lexora-releases';
+      fetch('https://api.github.com/repos/' + REPO + '/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (rel) {
+          var assets = rel.assets || [];
+          function pick(re) { return assets.filter(function (a) { return re.test(a.name); })[0]; }
+          function link(id, asset) { var el = document.getElementById(id); if (asset && el) el.href = asset.browser_download_url; }
+          link('dl-win', pick(/\.exe$/i));
+          link('dl-mac-arm', pick(/arm64.*\.dmg$/i));
+          link('dl-mac-intel', assets.filter(function (a) { return /\.dmg$/i.test(a.name) && !/arm64/i.test(a.name); })[0]);
+          var v = (rel.tag_name || '').replace(/^v/, '');
+          if (v) document.getElementById('version-line').textContent = 'Version ' + v + ' — Windows et Mac.';
+        })
+        .catch(function () { /* garde les liens par défaut */ });
+    })();
+  </script>
+</body>
+</html>
